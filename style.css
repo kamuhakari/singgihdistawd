@@ -39,21 +39,21 @@ body {
 }
 
 .hero h4{
-    background-color: rgb(0, 0, 0);
+    /* background-color: rgb(0, 0, 0); */
     font-family: "Combo", serif;
     color: var(--gold);
     border-radius: 10px;
+    /* font-size: 2rem; */
 }
 
-
 .hero p{
-    background-color: rgb(17, 16, 16);
+    /* background-color: rgb(17, 16, 16); */
     border-radius: 10px;
     color: var(--gold);
 }
 
 .hero h1 {
-    font-family: "Caveat", serif;
+    font-family: "Carattere", cursive;
     font-size: 6rem;
     color: var(--gold);
     
@@ -73,49 +73,19 @@ body {
 
 }
 
-.countdown {
-
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.25rem;
-    font-family: 'Work Sans', serif;
-}
-
-.countdown div{
-  width: 100px;
-  height: 65px;
-  padding: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  float: left;
-  margin: 10px;
-  background: var(--gold);
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  border-radius: 20rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+@keyframes sway {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
   
-    
-}
+  .img-intro {
+    animation: sway 3s infinite;
+  }
 
 
-.countdown div h2{
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-    align-items: center;
-    color: #000;
-}
-
-.countdown div small {
-    font-size: 0.6rem;
-    font-weight: 500;
-    color: black;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
 
 
 .mynavbar {
@@ -201,10 +171,12 @@ body {
 
 /* info */
 .info{
-    background-color: var(--bg);
+    background-image: url(bg4jpg.jpg);
     color: white;
     padding-top: 8rem;
     padding-bottom: 6rem;
+    background-position: center;
+    background-size: cover;
 }
 
 .info h2{
@@ -247,11 +219,65 @@ body {
     font-weight: 0.9rem;
 }
 
+.info h3{
+    text-align: center;
+}
+
+.info .countdown{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    font-family: 'Work Sans', serif;
+}
+
+.info .countdown div{
+  width: 100px;
+  height: 65px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  margin: 10px;
+  background: var(--gold);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 20rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+    
+}
+
+
+.info .countdown div h2{
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    align-items: center;
+    color: #000;
+    font-family: 'Work Sans', serif;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.info .countdown div small {
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
 /* Story */
 
 .story{
     padding-top: 10rem;
     padding-bottom: 8rem;
+    background-image: url(bg3jpg.jpg);
+    background-size: cover;
+    background-position: center;
 }
 
 .story span {
@@ -264,7 +290,7 @@ body {
 }
 
 .story h2{
-    color: var(--gold);
+    color: #aa8105;
     font-family: "Caveat", serif;
     font-size: 5rem;
     font-weight: bold;
@@ -380,7 +406,9 @@ body {
 .gallery{
     padding-top: 10rem;
     padding-bottom: 8rem;
-    background-color: #e2d2a0;
+    background-image: url(bg5jpg.jpg);
+    background-size: cover;
+    background-position: center;
 }
 
 .gallery span {
@@ -410,7 +438,7 @@ body {
 .rsvp{
     padding-top: 10rem;
     padding-bottom: 8rem;
-    background-color: var(--bg);
+    background-image: url(bg4jpg.jpg);
 
 }
 
@@ -443,6 +471,82 @@ body {
     color: var(--gold);
     border: 1px solid white;
 }
+
+.comment-section {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+  }
+  h2 {
+    color: var(--gold);
+    margin-bottom: 5px;
+  }
+  .subtitle {
+    color: #888;
+    margin-top: 0;
+  }
+  .comment-form {
+    margin-bottom: 30px;
+  }
+  .name-input, .message-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #e0c7c7;
+    border-radius: 4px;
+  }
+  .message-input {
+    height: 100px;
+    resize: vertical;
+  }
+  .submit-btn {
+    background: var(--gold);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .submit-btn:hover {
+    background: #b85858;
+  }
+  .comments-list {
+    margin-top: 20px;
+  }
+  .comment {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .comment-author {
+    margin: 0 0 5px 0;
+    color: var(--gold);
+    font-weight: bold;
+  }
+  .comment-text {
+    margin: 10px 0;
+    color: #555;
+  }
+  .comment-date {
+    font-size: 12px;
+    color: #999;
+  }
+  .comment-count {
+    font-weight: bold;
+    color: var(--gold);
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+
+  .pagination{
+    color: white;
+  }
 
 /* gifts */
 
@@ -560,10 +664,27 @@ footer ul li {
             font-size: 70%;
           
         }
+
+        .hero p{
+            font-size: 2rem;
+        }
+
+        .hero h1{
+            font-size: 3rem;
+        }
         
-        .countdown div{
+        #countdown{
+            margin-top: 15px;
+        }
+
+        #countdown div{
             padding: 20px;
             margin: 5px;
+            width: 60px;
+        }
+
+        .info h3{
+            margin-top: 5px;
         }
 
         .mynavbar .nav-link {
@@ -610,6 +731,11 @@ footer ul li {
         .hero img{
             width: 100%;
             height: auto;
+        }
+
+        #hero .img-intro{
+            width: 100px;
+            padding: 10px
         }
 
   }
