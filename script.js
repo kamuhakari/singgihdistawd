@@ -111,7 +111,13 @@ window.addEventListener("load", function() {
 
   // comment
   document.addEventListener('DOMContentLoaded', function() {
-    loadComments();
+  // Initialize storage first
+  if (!localStorage.getItem('comments')) {
+    localStorage.setItem('comments', JSON.stringify([]));
+  }
+  // Then load comments
+  loadComments();
+});
     
     document.querySelector('.submit-btn').addEventListener('click', function() {
       const name = document.querySelector('.name-input').value.trim();
@@ -173,7 +179,6 @@ function loadComments(page = 1, commentsPerPage = 3) {
 
 
   }
-  
   
 
 
