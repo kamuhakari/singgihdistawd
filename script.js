@@ -109,6 +109,7 @@ window.addEventListener("load", function() {
     });
   });
 
+
   // comment
   document.addEventListener('DOMContentLoaded', function() {
   // Initialize storage first
@@ -117,7 +118,6 @@ window.addEventListener("load", function() {
   }
   // Then load comments
   loadComments();
-});
     
     document.querySelector('.submit-btn').addEventListener('click', function() {
       const name = document.querySelector('.name-input').value.trim();
