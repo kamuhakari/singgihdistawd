@@ -110,75 +110,168 @@ window.addEventListener("load", function() {
   });
 
 
-  // comment
+  // Comments section
   document.addEventListener('DOMContentLoaded', function() {
-  // Initialize storage first
-  if (!localStorage.getItem('comments')) {
-    localStorage.setItem('comments', JSON.stringify([]));
-  }
-  // Then load comments
-  loadComments();
-    
-    document.querySelector('.submit-btn').addEventListener('click', function() {
-      const name = document.querySelector('.name-input').value.trim();
-      const message = document.querySelector('.message-input').value.trim();
-      
-      if (name && message) {
-        addComment(name, message);
-        document.querySelector('.name-input').value = '';
-        document.querySelector('.message-input').value = '';
-      } else {
-        alert('Harap isi nama dan ucapan!');
-      }
+    // Initialize comments array in localStorage if it doesn't exist
+    if (!localStorage.getItem('comments')) {
+        localStorage.setItem('comments', JSON.stringify([]));
+    }
+
+    // DOM elements
+    const nameInput = document.getElementById('name');
+    const commentInput = document.getElementById('comment');
+    const submitButton = document.getElementById('submitComment');
+    const commentsContainer = document.getElementById('commentsContainer');
+    const commentCountElement = document.getElementById('commentCount');
+    const paginationElement = document.getElementById('pagination');
+
+    // Pagination variables
+    const commentsPerPage = 2;
+    let currentPage = 1;
+
+    // Load and display comments
+    function loadComments(page = 1) {
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+        commentCountElement.textContent = `${comments.length} Comments`;
+
+        // Calculate pagination
+        const totalPages = Math.ceil(comments.length / commentsPerPage);
+        currentPage = Math.min(page, totalPages);
+        
+        // Display comments for current page
+        const startIndex = (currentPage - 1) * commentsPerPage;
+        const endIndex = startIndex + commentsPerPage;
+        const commentsToShow = comments.slice(startIndex, endIndex).reverse(); // Show newest first
+
+        commentsContainer.innerHTML = '';
+        
+        if (commentsToShow.length === 0) {
+            commentsContainer.innerHTML = '<p>Belum ada ucapan. Jadilah yang pertama!</p>';
+        } else {
+            commentsToShow.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+                
+                const timeAgo = formatTimeAgo(comment.timestamp);
+                
+                commentElement.innerHTML = `
+                    <div class="comment-author">${comment.name}</div>
+                    <div class="comment-text">${comment.text}</div>
+                    <div class="comment-date">${timeAgo}</div>
+                `;
+                
+                commentsContainer.appendChild(commentElement);
+            });
+        }
+
+        // Update pagination buttons
+        updatePaginationButtons(totalPages);
+    }
+
+    // Format timestamp as "X time ago"
+    function formatTimeAgo(timestamp) {
+        const now = new Date();
+        const commentDate = new Date(timestamp);
+        const seconds = Math.floor((now - commentDate) / 1000);
+        
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return `${interval} tahun lalu`;
+        
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return `${interval} bulan lalu`;
+        
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return `${interval} hari lalu`;
+        
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return `${interval} jam lalu`;
+        
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) return `${interval} menit lalu`;
+        
+        return `${Math.floor(seconds)} detik lalu`;
+    }
+
+    // Update pagination buttons
+    function updatePaginationButtons(totalPages) {
+        paginationElement.innerHTML = '';
+        
+        if (totalPages <= 1) return;
+        
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '<';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            loadComments(currentPage - 1);
+            // window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationElement.appendChild(prevButton);
+        
+        // Page buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+            pageButton.addEventListener('click', () => {
+                loadComments(i);
+                // window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            paginationElement.appendChild(pageButton);
+        }
+        
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.textContent = '>';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            loadComments(currentPage + 1);
+            // window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationElement.appendChild(nextButton);
+    }
+
+    // Handle form submission
+    submitButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const name = nameInput.value.trim();
+        const commentText = commentInput.value.trim();
+        
+        if (name === '' || commentText === '') {
+            alert('Nama dan ucapan harus diisi!');
+            return;
+        }
+        
+        // Get existing comments
+        const comments = JSON.parse(localStorage.getItem('comments')) || [];
+        
+        // Add new comment
+        const newComment = {
+            name: name,
+            text: commentText,
+            timestamp: new Date().toISOString()
+        };
+        
+        comments.push(newComment);
+        localStorage.setItem('comments', JSON.stringify(comments));
+        
+        // Clear form
+        nameInput.value = '';
+        commentInput.value = '';
+        
+        // Reload comments (show first page)
+        loadComments(1);
+        
+        // Scroll to top
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  });
 
-  function addComment(name, message) {
-    const comment = {
-      name,
-      message,
-      date: new Date().toLocaleString('id-ID')
-    };
-    
-    // Save to local storage
-    const comments = JSON.parse(localStorage.getItem('weddingComments') || '[]');
-    comments.unshift(comment); // Add new comment to beginning
-    localStorage.setItem('weddingComments', JSON.stringify(comments));
-    
-    // Refresh display
+    // Initial load
     loadComments();
-  }
-
-  // In your existing code, modify loadComments():
-function loadComments(page = 1, commentsPerPage = 3) {
-  const allComments = JSON.parse(localStorage.getItem('weddingComments') || []);
-  const totalPages = Math.ceil(allComments.length / commentsPerPage);
-  const startIdx = (page - 1) * commentsPerPage;
-  const paginatedComments = allComments.slice(startIdx, startIdx + commentsPerPage);
-  const commentCount = document.querySelector('.comment-count');
-
-  // update comment count
-  commentCount.innerHTML = `Total Ucapan: ${allComments.length}`;
-  commentCount.style.display = allComments.length > 0 ? 'block' : 'none';
-
-  // Display comments
-  document.querySelector('.comments-list').innerHTML = paginatedComments.map(comment => `
-    <div class="comment">
-      <div class="comment-author">${comment.name}</div>
-      <div class="comment-text">${comment.message}</div>
-      <div class="comment-date">${comment.date}</div>
-    </div>
-  `).join('');
-
-  // Add pagination controls
-  document.querySelector('.pagination').innerHTML = `
-    ${page > 1 ? `<button onclick="loadComments(${page - 1})">Previous</button>` : ''}
-    <span>Page ${page} of ${totalPages}</span>
-    ${page < totalPages ? `<button onclick="loadComments(${page + 1})">Next</button>` : ''}
-  `;
-
-
-  }
+});
   
 
 
