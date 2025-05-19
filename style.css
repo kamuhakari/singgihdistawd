@@ -40,7 +40,6 @@ body {
 
 .hero h4{
     /* background-color: rgb(0, 0, 0); */
-    font-family: "Combo", serif;
     color: var(--gold);
     border-radius: 10px;
     /* font-size: 2rem; */
